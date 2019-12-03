@@ -1,4 +1,4 @@
-const notes = {
+const noteFrequencies = {
   "C0": 16.35,
   "C#0": 17.32,
   "Db0": 17.32,
@@ -143,18 +143,26 @@ const notes = {
   "Eb8": 4978.03,
 }
 
-const keys = {
-  a: notes["A4"],
-  s: notes["B4"],
-  d: notes["C5"],
-  f: notes["D5"],
-  g: notes["E5"],
-  h: notes["F5"],
-  j: notes["G5"],
-  k: notes["A5"],
-  l: notes["B5"],
-  ';': notes["C6"],
-  ':': notes["D6"],
-}
+const keyNotes = [
+  { key: 'a', note: "A4" },
+  { key: 'w', note: "A#4" },
+  { key: 'e', note: "B4" },
+  { key: 'd', note: "C5" },
+  { key: 'r', note: "C#5" },
+  { key: 'f', note: "D5" },
+  { key: 't', note: "D#5" },
+  { key: 'g', note: "E5" },
+  { key: 'h', note: "F5" },
+  { key: 'u', note: "F#5" },
+  { key: 'j', note: "G5" },
+  { key: 'i', note: "G#5" },
+  { key: 'k', note: "A5" },
+  { key: 'o', note: "A#5" },
+  { key: 'l', note: "B5" },
+  { key: ';', note: "C6" },
+  { key: '[', note: "C#6" },
+  { key: ':', note: "D6" },
+].map(kn => ({ ...kn, freq: noteFrequencies[kn.note] }))
 
-export default keys;
+
+export default keyNotes;

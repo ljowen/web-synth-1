@@ -1,25 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import VirtualAudioContext from './VirtualAudioContext';
+import { gain } from 'virtual-audio-graph';
 
-const Dial = ({ theta = 0, ...props }) => {
-	const cx = 50;
-	const cy = 50;
-	const r = 50;
-	const x2 = cx + r * Math.cos(Math.PI * theta);
-	const y2 = cy + r * Math.sin(Math.PI * theta)
+const Dial = ({ theta = 0, radius = 25, ...props }) => {
+	const cx = radius;
+	const cy = radius;
+	const x2 = cx + radius * Math.cos(Math.PI * theta);
+	const y2 = cy + radius * Math.sin(Math.PI * theta);
+
 	return <>
 		<pre>{`${y2},${x2},${theta}`}</pre>
-		<svg height="100" width="100" onClick={props.onClick}>
-			<circle cx="50" cy="50" r="50" stroke="black" strokeWidth="1" fill="transparent" />
-			<line x1="50" x2={x2} y1="50" y2={y2} stroke="black" strokeWidth="1"> </line>
+		<svg height={radius * 2} width={radius * 2} onClick={props.onClick}>
+			<circle cx={cx} cy={cy} r={radius} stroke="black" strokeWidth="1" fill="transparent" />
+			<line x1={cx} x2={x2} y1={cy} y2={y2} stroke="black" strokeWidth="1"> </line>
 		</svg></>
 }
 
 const DialControl = () => {
 	const [theta, setTheta] = useState(0);
+	const { vag } = useContext(VirtualAudioContext);
+	vag.update({
+		0: gain('output', { gain: theta }),
+	})
 
-	return <div onWheel={(e) => setTheta(theta + 0.001 * e.deltaY)} >
-		<Dial theta={theta} />
-	</div>
+	return <div onWheel={(e) => { setTheta(theta + 0.001 * e.deltaY); e.stopPropagation(); }
+	} >
+		<Dial theta={theta} radius={10} />
+	</div >
 }
 
 export default DialControl;

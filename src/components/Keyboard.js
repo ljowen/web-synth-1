@@ -1,28 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import './keyboard.css'
-const Keyboard = () => {
-    const whiteKeys = [
-        'a',
-        's',
-        'd',
-        'f',
-        'g',
-        'h',
-        'j',
-        'k',
-        'l',
-        ';',
-        "'"
-    ];
-    const [keysDown, setKeysDown] = useState([]);
+import React, { useState, useEffect, useContext, getCurrentTime } from 'react';
+import { gain, oscillator } from 'virtual-audio-graph';
+import VirtualAudioContext from './VirtualAudioContext';
+import './keyboard.css';
 
+import keyFreqs from '../data/keys';
+
+const Keyboard = ({ onKeyDown }) => {
+    // const keys = Object.
+    const [keysDown, setKeysDown] = useState([]);
+    const { vag } = useContext(VirtualAudioContext);
 
     useEffect(() => {
         window.onkeydown = (e) => {
+            vag.update({
+                0: gain('output', { gain: 0.5 }),
+                1: oscillator(0, { stopTime: vag.currentTime + 1 }),
+            });
             console.log(e, keysDown);
             if (keysDown.includes(e.key) === false) {
                 console.log(1)
-                setKeysDown([...keysDown, e.key])
+                setKeysDown([...keysDown, e.key]);
             }
         }
         window.onkeyup = (e) => {
@@ -31,19 +28,15 @@ const Keyboard = () => {
             }
         }
     });
-
     return <div className="keys">
-        {whiteKeys.map((key =>
-
+        {keyFreqs.map((key =>
             <>
                 <div className={`whiteKey ${keysDown.includes(key) ? 'active' : ''}`} key={key}>
-                    {key}
-                </div>
-                <div className="blackKey">
-                    {key}
+                    {key.key}
                 </div>
             </>
         ))}
+        <pre>{JSON.stringify(keyFreqs)}</pre>
         <pre>{JSON.stringify(keysDown)}</pre>
     </div>
 }
