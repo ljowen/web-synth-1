@@ -146,7 +146,7 @@ const noteFrequencies = {
 const keyNotes = [
   { key: 'a', note: "A4" },
   { key: 'w', note: "A#4" },
-  { key: 'e', note: "B4" },
+  { key: 's', note: "B4" },
   { key: 'd', note: "C5" },
   { key: 'r', note: "C#5" },
   { key: 'f', note: "D5" },

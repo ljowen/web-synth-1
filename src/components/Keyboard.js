@@ -6,15 +6,21 @@ import './keyboard.css';
 import keyFreqs from '../data/keys';
 
 const Keyboard = ({ onKeyDown }) => {
-    // const keys = Object.
     const [keysDown, setKeysDown] = useState([]);
     const { vag } = useContext(VirtualAudioContext);
 
     useEffect(() => {
         window.onkeydown = (e) => {
+            const notePressed = keyFreqs.find(k => k.key === e.key);
+            if (!notePressed) {
+                return;
+            }
             vag.update({
-                0: gain('output', { gain: 0.5 }),
-                1: oscillator(0, { stopTime: vag.currentTime + 1 }),
+                0: gain('output', { gain: 0.3 }),
+                1: oscillator(0, {
+                    frequency: notePressed.freq,
+                    stopTime: vag.currentTime + 1
+                }),
             });
             console.log(e, keysDown);
             if (keysDown.includes(e.key) === false) {
