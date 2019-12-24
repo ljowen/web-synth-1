@@ -23,7 +23,7 @@ const DialControl = () => {
 		0: gain('output', { gain: theta }),
 	})
 
-	return <div onWheel={(e) => { setTheta(theta + 0.001 * e.deltaY); e.stopPropagation(); }
+	return <div onWheel={(e) => { setTheta(theta + 0.001 * e.deltaY); e.stopPropagation(); return false; }
 	} >
 		<Dial theta={theta} radius={10} />
 	</div >
